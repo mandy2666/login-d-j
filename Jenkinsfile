@@ -8,7 +8,7 @@ pipeline {
           firstName = input (
             message: 'What is your first name?', 
             ok: 'Submit', 
-            parameters: [string(defaultValue: 'Gopala', name: 'FIRST_NAME', trim: true)]
+            parameters: [string(defaultValue: 'mandy', name: 'FIRST_NAME', trim: true)]
           )
         }
       }
