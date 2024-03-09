@@ -1,26 +1,18 @@
-def firstName = null
 pipeline {
-  agent none
-  stages {
-    stage('input') {
-      steps {
-        script {
-          firstName = input (
-            message: 'What is your first name?', 
-            ok: 'Submit', 
-            parameters: [string(defaultValue: 'mandy', name: 'FIRST_NAME', trim: true)]
-          )
+    agent any
+
+    stages {
+        stage('Login to Docker Hub') {
+            steps {
+                script {
+                    withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+                        docker.withRegistry('https://index.docker.io/v1/', DOCKER_USERNAME, DOCKER_PASSWORD) {
+                            // Perform any Docker-related actions here after logging in
+                            // For example: docker.pull('your-image:tag')
+                        }
+                    }
+                }
+            }
         }
-      }
     }
-    stage('output') {
-      agent any
-      steps {
-        script {
-          echo "Good Morning, $firstName"
-          sh "bash display.sh $firstName"
-        }
-      }
-    }
-  }
 }
